@@ -201,24 +201,51 @@ public struct FinderSessionSnapshot: Codable, Equatable {
 }
 
 public struct AppSettings: Codable, Equatable {
+    public var autoSaveEnabled: Bool
     public var recordingIntervalSeconds: TimeInterval
     public var restoreMode: RestoreMode
     public var networkReconnectTimeoutSeconds: TimeInterval
     public var historyCount: Int
     public var launchAtLogin: Bool
+    public var soundEffectsEnabled: Bool
 
     public init(
+        autoSaveEnabled: Bool = false,
         recordingIntervalSeconds: TimeInterval = 300,
         restoreMode: RestoreMode = .mergeWithCurrentWindows,
         networkReconnectTimeoutSeconds: TimeInterval = 20,
         historyCount: Int = 10,
-        launchAtLogin: Bool = false
+        launchAtLogin: Bool = false,
+        soundEffectsEnabled: Bool = true
     ) {
+        self.autoSaveEnabled = autoSaveEnabled
         self.recordingIntervalSeconds = recordingIntervalSeconds
         self.restoreMode = restoreMode
         self.networkReconnectTimeoutSeconds = networkReconnectTimeoutSeconds
         self.historyCount = historyCount
         self.launchAtLogin = launchAtLogin
+        self.soundEffectsEnabled = soundEffectsEnabled
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case autoSaveEnabled
+        case recordingIntervalSeconds
+        case restoreMode
+        case networkReconnectTimeoutSeconds
+        case historyCount
+        case launchAtLogin
+        case soundEffectsEnabled
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.autoSaveEnabled = try container.decodeIfPresent(Bool.self, forKey: .autoSaveEnabled) ?? false
+        self.recordingIntervalSeconds = try container.decodeIfPresent(TimeInterval.self, forKey: .recordingIntervalSeconds) ?? 300
+        self.restoreMode = try container.decodeIfPresent(RestoreMode.self, forKey: .restoreMode) ?? .mergeWithCurrentWindows
+        self.networkReconnectTimeoutSeconds = try container.decodeIfPresent(TimeInterval.self, forKey: .networkReconnectTimeoutSeconds) ?? 20
+        self.historyCount = try container.decodeIfPresent(Int.self, forKey: .historyCount) ?? 10
+        self.launchAtLogin = try container.decodeIfPresent(Bool.self, forKey: .launchAtLogin) ?? false
+        self.soundEffectsEnabled = try container.decodeIfPresent(Bool.self, forKey: .soundEffectsEnabled) ?? true
     }
 }
 

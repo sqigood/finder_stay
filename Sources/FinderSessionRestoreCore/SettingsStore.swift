@@ -25,11 +25,13 @@ public final class SettingsStore {
 
     private func normalized(_ settings: AppSettings) -> AppSettings {
         AppSettings(
+            autoSaveEnabled: settings.autoSaveEnabled,
             recordingIntervalSeconds: max(30, settings.recordingIntervalSeconds),
             restoreMode: .mergeWithCurrentWindows,
             networkReconnectTimeoutSeconds: max(1, settings.networkReconnectTimeoutSeconds),
             historyCount: min(max(settings.historyCount, 0), 100),
-            launchAtLogin: settings.launchAtLogin
+            launchAtLogin: settings.launchAtLogin,
+            soundEffectsEnabled: settings.soundEffectsEnabled
         )
     }
 }

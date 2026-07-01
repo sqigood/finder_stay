@@ -28,11 +28,13 @@ final class FinderSessionRestoreCoreTests: XCTestCase {
         let store = SettingsStore(baseDirectory: temporaryDirectory())
         let settings = store.load()
 
+        XCTAssertFalse(settings.autoSaveEnabled)
         XCTAssertEqual(settings.recordingIntervalSeconds, 300)
         XCTAssertEqual(settings.restoreMode, .mergeWithCurrentWindows)
         XCTAssertEqual(settings.networkReconnectTimeoutSeconds, 20)
         XCTAssertEqual(settings.historyCount, 10)
         XCTAssertFalse(settings.launchAtLogin)
+        XCTAssertTrue(settings.soundEffectsEnabled)
     }
 
     func testTargetLocationClassification() {

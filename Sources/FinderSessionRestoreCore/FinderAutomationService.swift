@@ -5,6 +5,7 @@ public enum FinderAutomationError: Error, LocalizedError {
     case finderNotRunning
     case invalidScriptOutput
     case currentSpaceWindowListUnavailable
+    case openFailed(String)
 
     public var errorDescription: String? {
         switch self {
@@ -14,6 +15,8 @@ public enum FinderAutomationError: Error, LocalizedError {
             return "Finder automation returned invalid data."
         case .currentSpaceWindowListUnavailable:
             return "Current Desktop Finder windows could not be read. Grant Accessibility permission and try saving again."
+        case .openFailed(let target):
+            return "Finder could not open \(target)."
         }
     }
 }
@@ -74,60 +77,6 @@ public final class FinderAutomationService: FinderAutomationServicing {
             throw FinderAutomationError.finderNotRunning
         }
 
-        let originalSpaceID = spaceService.currentSpaceID()
-        let desktopSpaceIDs = orderedDesktopSpaceIDs(current: originalSpaceID)
-        if desktopSpaceIDs.isEmpty {
-            return try captureCurrentDesktopFinderWindows()
-        }
-
-        var windows: [FinderWindowSnapshot] = []
-        var seenKeys: Set<String> = []
-
-        defer {
-            if let originalSpaceID {
-                _ = spaceService.switchToSpace(originalSpaceID)
-            }
-        }
-
-        for spaceID in desktopSpaceIDs {
-            if spaceID != originalSpaceID {
-                guard spaceService.switchToSpace(spaceID) else {
-                    continue
-                }
-                Thread.sleep(forTimeInterval: max(delay, 0.25))
-            }
-
-            let captured = try captureCurrentDesktopFinderWindows()
-            for window in captured {
-                let key = windowIdentityKey(window)
-                guard !seenKeys.contains(key) else {
-                    continue
-                }
-                seenKeys.insert(key)
-                windows.append(window)
-            }
-        }
-
-        return windows
-    }
-
-    private func orderedDesktopSpaceIDs(current: UInt64?) -> [UInt64] {
-        let allSpaceIDs = spaceService.allDesktopSpaceIDs()
-        guard !allSpaceIDs.isEmpty else {
-            return []
-        }
-
-        var ordered: [UInt64] = []
-        if let current {
-            ordered.append(current)
-        }
-        for spaceID in allSpaceIDs where !ordered.contains(spaceID) {
-            ordered.append(spaceID)
-        }
-        return ordered
-    }
-
-    private func captureCurrentDesktopFinderWindows() throws -> [FinderWindowSnapshot] {
         let output = try runner.run(Self.captureScript)
         guard let data = output.data(using: .utf8) else {
             throw FinderAutomationError.invalidScriptOutput
@@ -152,19 +101,6 @@ public final class FinderAutomationService: FinderAutomationServicing {
                 activeTabIndex: 0
             )
         }
-    }
-
-    private func windowIdentityKey(_ window: FinderWindowSnapshot) -> String {
-        if let id = window.id, !id.isEmpty {
-            return "id:\(id)"
-        }
-        if let path = window.target.path, !path.isEmpty {
-            return "path:\(path)"
-        }
-        if let url = window.target.url?.absoluteString, !url.isEmpty {
-            return "url:\(url)"
-        }
-        return "title:\(window.title ?? ""):\(window.bounds.x):\(window.bounds.y):\(window.bounds.width):\(window.bounds.height)"
     }
 
     private func captureVisibleFinderWindows() throws -> [VisibleWindow] {
@@ -226,14 +162,7 @@ public final class FinderAutomationService: FinderAutomationServicing {
 
     private func open(location: TargetLocation) throws {
         if let url = location.url, !url.isFileURL {
-            _ = try runner.run("""
-            with timeout of 8 seconds
-                tell application "Finder"
-                    activate
-                    open location \(AppleScriptEscaper.quotedString(url.absoluteString))
-                end tell
-            end timeout
-            """)
+            try openWithWorkspace(url, targetDescription: url.absoluteString)
             return
         }
 
@@ -241,28 +170,17 @@ public final class FinderAutomationService: FinderAutomationServicing {
             return
         }
 
-        if location.kind == .mountedVolume {
-            let fileURL = URL(fileURLWithPath: path).absoluteString
-            _ = try runner.run("""
-            with timeout of 8 seconds
-                tell application "Finder"
-                    activate
-                    open location \(AppleScriptEscaper.quotedString(fileURL))
-                end tell
-            end timeout
-            """)
-            return
-        }
+        try openWithWorkspace(URL(fileURLWithPath: path), targetDescription: path)
+    }
 
-        _ = try runner.run("""
-        with timeout of 8 seconds
-            tell application "Finder"
-                activate
-                set targetFolder to POSIX file \(AppleScriptEscaper.quotedString(path)) as alias
-                make new Finder window to targetFolder
-            end tell
-        end timeout
-        """)
+    private func openWithWorkspace(_ url: URL, targetDescription: String) throws {
+        let openBlock = {
+            NSWorkspace.shared.open(url)
+        }
+        let opened = Thread.isMainThread ? openBlock() : DispatchQueue.main.sync(execute: openBlock)
+        guard opened else {
+            throw FinderAutomationError.openFailed(targetDescription)
+        }
     }
 
     private func setFrontWindowBounds(_ bounds: WindowBounds) throws {

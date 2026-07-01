@@ -8,6 +8,7 @@ final class MenuBarController: NSObject {
     private let sessionStore: SessionStore
     private let settingsStore: SettingsStore
     private let permissionService: PermissionService
+    private let scheduler: SchedulerService
     private var settingsWindowController: SettingsWindowController?
 
     init(
@@ -15,13 +16,15 @@ final class MenuBarController: NSObject {
         restorer: FinderSessionRestorer,
         sessionStore: SessionStore,
         settingsStore: SettingsStore,
-        permissionService: PermissionService
+        permissionService: PermissionService,
+        scheduler: SchedulerService
     ) {
         self.recorder = recorder
         self.restorer = restorer
         self.sessionStore = sessionStore
         self.settingsStore = settingsStore
         self.permissionService = permissionService
+        self.scheduler = scheduler
         super.init()
         configureStatusItem()
         rebuildMenu(status: nil)
@@ -65,6 +68,7 @@ final class MenuBarController: NSObject {
                 DispatchQueue.main.async {
                     Self.clearLastError()
                     self.rebuildMenu(status: "Saved \(snapshot.windows.count) Finder window\(snapshot.windows.count == 1 ? "" : "s").")
+                    self.playCompletionSound()
                 }
             } catch FinderAutomationError.finderNotRunning {
                 DispatchQueue.main.async {
@@ -87,6 +91,7 @@ final class MenuBarController: NSObject {
             try? self.sessionStore.saveRestoreReport(report)
             DispatchQueue.main.async {
                 self.rebuildMenu(status: report.summary)
+                self.playCompletionSound()
                 if report.hasWarnings {
                     self.showRestoreWarnings(report)
                 }
@@ -99,7 +104,8 @@ final class MenuBarController: NSObject {
             settingsWindowController = SettingsWindowController(
                 settingsStore: settingsStore,
                 sessionStore: sessionStore,
-                permissionService: permissionService
+                permissionService: permissionService,
+                scheduler: scheduler
             )
         }
         settingsWindowController?.showWindow(nil)
@@ -117,6 +123,17 @@ final class MenuBarController: NSObject {
         alert.alertStyle = .warning
         alert.addButton(withTitle: "OK")
         alert.runModal()
+    }
+
+    private func playCompletionSound() {
+        guard settingsStore.load().soundEffectsEnabled else {
+            return
+        }
+        if let sound = NSSound(named: NSSound.Name("Glass")) {
+            sound.play()
+        } else {
+            NSSound.beep()
+        }
     }
 
     private static func shortErrorMessage(_ error: Error) -> String {

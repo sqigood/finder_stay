@@ -29,17 +29,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             networkService: networkService,
             spaceService: spaceService
         )
+        let scheduler = SchedulerService(settingsStore: settingsStore, recorder: recorder)
+        self.scheduler = scheduler
 
         menuBarController = MenuBarController(
             recorder: recorder,
             restorer: restorer,
             sessionStore: sessionStore,
             settingsStore: settingsStore,
-            permissionService: permissionService
+            permissionService: permissionService,
+            scheduler: scheduler
         )
 
-        scheduler = SchedulerService(settingsStore: settingsStore, recorder: recorder)
-        scheduler?.start()
+        scheduler.start()
     }
 
     func applicationWillTerminate(_ notification: Notification) {

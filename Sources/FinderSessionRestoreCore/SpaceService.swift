@@ -106,7 +106,7 @@ public final class SpaceService: SpaceServicing {
             return false
         }
 
-        guard switchToSpace(spaceID) else {
+        guard switchToSpace(spaceID), waitForActiveSpace(spaceID) else {
             report.addWarning(RestoreWarning(
                 code: .spaceRestoreUnavailable,
                 message: "Saved Desktop could not be activated, so the window was not restored to avoid opening it on the wrong Desktop.",
@@ -116,6 +116,18 @@ public final class SpaceService: SpaceServicing {
         }
 
         return true
+    }
+
+    private func waitForActiveSpace(_ spaceID: UInt64) -> Bool {
+        let deadline = Date().addingTimeInterval(1.5)
+        repeat {
+            if currentSpaceID() == spaceID {
+                return true
+            }
+            Thread.sleep(forTimeInterval: 0.05)
+        } while Date() < deadline
+
+        return currentSpaceID() == spaceID
     }
 
     public func currentSpaceID() -> UInt64? {

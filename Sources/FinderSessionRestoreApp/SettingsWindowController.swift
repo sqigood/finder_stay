@@ -5,21 +5,30 @@ final class SettingsWindowController: NSWindowController {
     private let settingsStore: SettingsStore
     private let sessionStore: SessionStore
     private let permissionService: PermissionService
+    private let scheduler: SchedulerService
 
+    private let autoSaveCheckbox = NSButton(checkboxWithTitle: "Enable automatic save", target: nil, action: nil)
     private let intervalField = NSTextField()
+    private let soundCheckbox = NSButton(checkboxWithTitle: "Play completion sound", target: nil, action: nil)
     private let timeoutField = NSTextField()
     private let historyField = NSTextField()
     private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "Launch at login", target: nil, action: nil)
     private let permissionLabel = NSTextField(labelWithString: "")
     private let lastSavedLabel = NSTextField(labelWithString: "")
 
-    init(settingsStore: SettingsStore, sessionStore: SessionStore, permissionService: PermissionService) {
+    init(
+        settingsStore: SettingsStore,
+        sessionStore: SessionStore,
+        permissionService: PermissionService,
+        scheduler: SchedulerService
+    ) {
         self.settingsStore = settingsStore
         self.sessionStore = sessionStore
         self.permissionService = permissionService
+        self.scheduler = scheduler
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 560, height: 470),
+            contentRect: NSRect(x: 0, y: 0, width: 560, height: 520),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -48,100 +57,152 @@ final class SettingsWindowController: NSWindowController {
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 14
+        stack.spacing = 16
         stack.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stack)
 
         NSLayoutConstraint.activate([
             stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24)
+            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 22)
         ])
 
-        stack.addArrangedSubview(row(label: "Recording interval", control: intervalField, suffix: "seconds"))
-        stack.addArrangedSubview(row(label: "Network reconnect timeout", control: timeoutField, suffix: "seconds"))
-        stack.addArrangedSubview(row(label: "Keep session history count", control: historyField, suffix: "snapshots"))
-        stack.addArrangedSubview(launchAtLoginCheckbox)
+        autoSaveCheckbox.target = self
+        autoSaveCheckbox.action = #selector(autoSaveToggled)
+        stack.addArrangedSubview(settingBlock(
+            title: "Automatic Save",
+            detail: "Off by default. When enabled, the app saves Finder sessions on the interval below.",
+            controls: [autoSaveCheckbox, compactRow(control: intervalField, suffix: "seconds")]
+        ))
 
-        let permissionsTitle = NSTextField(labelWithString: "Permission status")
-        permissionsTitle.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
-        stack.addArrangedSubview(permissionsTitle)
+        stack.addArrangedSubview(settingBlock(
+            title: "Completion Sound",
+            detail: "Plays after manual save and restore complete.",
+            controls: [soundCheckbox]
+        ))
+
+        stack.addArrangedSubview(settingBlock(
+            title: "Restore Safety",
+            detail: "Network timeout is used only for saved network or mounted-volume targets.",
+            controls: [compactRow(control: timeoutField, suffix: "seconds")]
+        ))
+
+        stack.addArrangedSubview(settingBlock(
+            title: "History",
+            detail: "Number of saved snapshots to keep in the local app data folder.",
+            controls: [compactRow(control: historyField, suffix: "snapshots")]
+        ))
+
+        stack.addArrangedSubview(settingBlock(
+            title: "Launch",
+            detail: "Controls whether the utility starts when you sign in.",
+            controls: [launchAtLoginCheckbox]
+        ))
+
         permissionLabel.lineBreakMode = .byWordWrapping
         permissionLabel.maximumNumberOfLines = 4
-        stack.addArrangedSubview(permissionLabel)
+        stack.addArrangedSubview(settingBlock(
+            title: "Permissions",
+            detail: "Finder control, window position reading, and Desktop-safe restore depend on these macOS permissions.",
+            controls: [permissionLabel]
+        ))
 
+        lastSavedLabel.textColor = .secondaryLabelColor
         stack.addArrangedSubview(lastSavedLabel)
 
-        let dataButtonRow = NSStackView()
-        dataButtonRow.orientation = .horizontal
-        dataButtonRow.spacing = 8
-        let openDataButton = NSButton(title: "Open Data Folder", target: self, action: #selector(openDataFolder))
-        let resetButton = NSButton(title: "Reset Saved Sessions", target: self, action: #selector(resetSavedSessions))
-        dataButtonRow.addArrangedSubview(openDataButton)
-        dataButtonRow.addArrangedSubview(resetButton)
-        stack.addArrangedSubview(dataButtonRow)
+        let utilityRow = NSStackView()
+        utilityRow.orientation = .horizontal
+        utilityRow.spacing = 8
+        utilityRow.addArrangedSubview(NSButton(title: "Open Data Folder", target: self, action: #selector(openDataFolder)))
+        utilityRow.addArrangedSubview(NSButton(title: "Request Accessibility", target: self, action: #selector(requestAccessibility)))
+        utilityRow.addArrangedSubview(NSButton(title: "Request Screen Recording", target: self, action: #selector(requestScreenRecording)))
+        stack.addArrangedSubview(utilityRow)
 
-        let permissionButtonRow = NSStackView()
-        permissionButtonRow.orientation = .horizontal
-        permissionButtonRow.spacing = 8
-        let accessibilityButton = NSButton(title: "Request Accessibility Permission", target: self, action: #selector(requestAccessibility))
-        let screenRecordingButton = NSButton(title: "Request Screen Recording Permission", target: self, action: #selector(requestScreenRecording))
-        let saveButton = NSButton(title: "Save Settings", target: self, action: #selector(saveSettings))
-        permissionButtonRow.addArrangedSubview(accessibilityButton)
-        permissionButtonRow.addArrangedSubview(screenRecordingButton)
-        permissionButtonRow.addArrangedSubview(saveButton)
-        stack.addArrangedSubview(permissionButtonRow)
+        let bottomRow = NSStackView()
+        bottomRow.orientation = .horizontal
+        bottomRow.spacing = 8
+        bottomRow.addArrangedSubview(NSButton(title: "Reset Saved Sessions", target: self, action: #selector(resetSavedSessions)))
+        bottomRow.addArrangedSubview(NSButton(title: "Save Settings", target: self, action: #selector(saveSettings)))
+        stack.addArrangedSubview(bottomRow)
     }
 
-    private func row(label: String, control: NSView, suffix: String?) -> NSView {
+    private func settingBlock(title: String, detail: String, controls: [NSView]) -> NSView {
         let stack = NSStackView()
-        stack.orientation = .horizontal
-        stack.alignment = .centerY
-        stack.spacing = 8
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 5
 
-        let labelView = NSTextField(labelWithString: label)
-        labelView.widthAnchor.constraint(equalToConstant: 190).isActive = true
-        control.widthAnchor.constraint(equalToConstant: 180).isActive = true
-        stack.addArrangedSubview(labelView)
-        stack.addArrangedSubview(control)
+        let titleLabel = NSTextField(labelWithString: title)
+        titleLabel.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
+        stack.addArrangedSubview(titleLabel)
 
-        if let suffix {
-            stack.addArrangedSubview(NSTextField(labelWithString: suffix))
+        let detailLabel = NSTextField(labelWithString: detail)
+        detailLabel.textColor = .secondaryLabelColor
+        detailLabel.lineBreakMode = .byWordWrapping
+        detailLabel.maximumNumberOfLines = 2
+        detailLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 500).isActive = true
+        stack.addArrangedSubview(detailLabel)
+
+        for control in controls {
+            stack.addArrangedSubview(control)
         }
 
         return stack
     }
 
+    private func compactRow(control: NSView, suffix: String) -> NSView {
+        let stack = NSStackView()
+        stack.orientation = .horizontal
+        stack.alignment = .centerY
+        stack.spacing = 8
+        control.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        stack.addArrangedSubview(control)
+        let suffixLabel = NSTextField(labelWithString: suffix)
+        suffixLabel.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(suffixLabel)
+        return stack
+    }
+
     private func loadSettings() {
         let settings = settingsStore.load()
+        autoSaveCheckbox.state = settings.autoSaveEnabled ? .on : .off
         intervalField.stringValue = String(Int(settings.recordingIntervalSeconds))
+        intervalField.isEnabled = settings.autoSaveEnabled
+        soundCheckbox.state = settings.soundEffectsEnabled ? .on : .off
         timeoutField.stringValue = String(Int(settings.networkReconnectTimeoutSeconds))
         historyField.stringValue = String(settings.historyCount)
         launchAtLoginCheckbox.state = settings.launchAtLogin ? .on : .off
 
         let permissions = permissionService.currentStatus()
         permissionLabel.stringValue = [
-            permissions.automationAllowed ? "Automation permission: Granted" : "Automation permission: Required for Finder control",
-            permissions.accessibilityAllowed ? "Accessibility permission: Granted" : "Accessibility permission: Required to read and restore Finder window positions",
-            permissions.screenRecordingLikelyAllowed ? "Screen Recording permission: Finder window metadata available" : "Screen Recording permission: Required to distinguish current Desktop windows safely"
+            permissions.automationAllowed ? "Automation: Granted" : "Automation: Required for Finder control",
+            permissions.accessibilityAllowed ? "Accessibility: Granted" : "Accessibility: Required for window positions",
+            permissions.screenRecordingLikelyAllowed ? "Screen Recording: Window metadata available" : "Screen Recording: Required for Desktop-safe restore"
         ].joined(separator: "\n")
 
         if let date = sessionStore.latestSavedDate() {
-            lastSavedLabel.stringValue = "Last saved session: \(date.formatted(date: .abbreviated, time: .standard))"
+            lastSavedLabel.stringValue = "Last saved: \(date.formatted(date: .abbreviated, time: .standard))"
         } else {
-            lastSavedLabel.stringValue = "Last saved session: Never"
+            lastSavedLabel.stringValue = "Last saved: Never"
         }
+    }
+
+    @objc private func autoSaveToggled() {
+        intervalField.isEnabled = autoSaveCheckbox.state == .on
     }
 
     @objc private func saveSettings() {
         let settings = AppSettings(
+            autoSaveEnabled: autoSaveCheckbox.state == .on,
             recordingIntervalSeconds: TimeInterval(Int(intervalField.stringValue) ?? 300),
             restoreMode: .mergeWithCurrentWindows,
             networkReconnectTimeoutSeconds: TimeInterval(Int(timeoutField.stringValue) ?? 20),
             historyCount: Int(historyField.stringValue) ?? 10,
-            launchAtLogin: launchAtLoginCheckbox.state == .on
+            launchAtLogin: launchAtLoginCheckbox.state == .on,
+            soundEffectsEnabled: soundCheckbox.state == .on
         )
         try? settingsStore.save(settings)
+        scheduler.start()
         loadSettings()
     }
 

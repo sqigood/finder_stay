@@ -14,7 +14,11 @@ public final class SchedulerService {
 
     public func start() {
         stop()
-        let interval = settingsStore.load().recordingIntervalSeconds
+        let settings = settingsStore.load()
+        guard settings.autoSaveEnabled else {
+            return
+        }
+        let interval = settings.recordingIntervalSeconds
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             self?.saveIfIdle()
         }
