@@ -1,0 +1,616 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A00100000000000000000001 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000001 /* main.swift */; };
+		A00100000000000000000002 /* AppEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000002 /* AppEntry.swift */; };
+		A00100000000000000000003 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000003 /* MenuBarController.swift */; };
+		A00100000000000000000004 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000004 /* SettingsWindowController.swift */; };
+		A00100000000000000000011 /* AppleScriptRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000011 /* AppleScriptRunner.swift */; };
+		A00100000000000000000012 /* FinderAutomationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000012 /* FinderAutomationService.swift */; };
+		A00100000000000000000013 /* FinderSessionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000013 /* FinderSessionRecorder.swift */; };
+		A00100000000000000000014 /* FinderSessionRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000014 /* FinderSessionRestorer.swift */; };
+		A00100000000000000000015 /* FinderTabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000015 /* FinderTabService.swift */; };
+		A00100000000000000000016 /* JSONCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000016 /* JSONCoding.swift */; };
+		A00100000000000000000017 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000017 /* Models.swift */; };
+		A00100000000000000000018 /* NetworkConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000018 /* NetworkConnectionService.swift */; };
+		A00100000000000000000019 /* PermissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000019 /* PermissionService.swift */; };
+		A0010000000000000000001A /* SchedulerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020000000000000000001A /* SchedulerService.swift */; };
+		A0010000000000000000001B /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020000000000000000001B /* SessionStore.swift */; };
+		A0010000000000000000001C /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020000000000000000001C /* SettingsStore.swift */; };
+		A0010000000000000000001D /* SpaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020000000000000000001D /* SpaceService.swift */; };
+		A00100000000000000000021 /* FinderSessionRestoreCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200000000000000000021 /* FinderSessionRestoreCoreTests.swift */; };
+		A00100000000000000000031 /* FinderSessionRestoreCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A00300000000000000000002 /* FinderSessionRestoreCore.framework */; };
+		A00100000000000000000032 /* FinderSessionRestoreCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A00300000000000000000002 /* FinderSessionRestoreCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A00100000000000000000033 /* FinderSessionRestoreCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A00300000000000000000002 /* FinderSessionRestoreCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A00400000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00500000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00600000000000000000002;
+			remoteInfo = FinderSessionRestoreCore;
+		};
+		A00400000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00500000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00600000000000000000002;
+			remoteInfo = FinderSessionRestoreCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A00700000000000000000001 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A00100000000000000000032 /* FinderSessionRestoreCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A00200000000000000000001 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		A00200000000000000000002 /* AppEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEntry.swift; sourceTree = "<group>"; };
+		A00200000000000000000003 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		A00200000000000000000004 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		A00200000000000000000011 /* AppleScriptRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptRunner.swift; sourceTree = "<group>"; };
+		A00200000000000000000012 /* FinderAutomationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderAutomationService.swift; sourceTree = "<group>"; };
+		A00200000000000000000013 /* FinderSessionRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSessionRecorder.swift; sourceTree = "<group>"; };
+		A00200000000000000000014 /* FinderSessionRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSessionRestorer.swift; sourceTree = "<group>"; };
+		A00200000000000000000015 /* FinderTabService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTabService.swift; sourceTree = "<group>"; };
+		A00200000000000000000016 /* JSONCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCoding.swift; sourceTree = "<group>"; };
+		A00200000000000000000017 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		A00200000000000000000018 /* NetworkConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionService.swift; sourceTree = "<group>"; };
+		A00200000000000000000019 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
+		A0020000000000000000001A /* SchedulerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulerService.swift; sourceTree = "<group>"; };
+		A0020000000000000000001B /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		A0020000000000000000001C /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		A0020000000000000000001D /* SpaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceService.swift; sourceTree = "<group>"; };
+		A00200000000000000000021 /* FinderSessionRestoreCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSessionRestoreCoreTests.swift; sourceTree = "<group>"; };
+		A00200000000000000000041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A00300000000000000000001 /* FinderSessionRestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinderSessionRestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00300000000000000000002 /* FinderSessionRestoreCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FinderSessionRestoreCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00300000000000000000003 /* FinderSessionRestoreCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FinderSessionRestoreCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00800000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00100000000000000000031 /* FinderSessionRestoreCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00800000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00800000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00100000000000000000033 /* FinderSessionRestoreCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00900000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A00900000000000000000002 /* Sources */,
+				A00900000000000000000005 /* Tests */,
+				A00900000000000000000007 /* Resources */,
+				A00900000000000000000008 /* Products */,
+				A00200000000000000000051 /* Package.swift */,
+				A00200000000000000000052 /* README.md */,
+			);
+			sourceTree = "<group>";
+		};
+		A00900000000000000000002 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A00900000000000000000003 /* FinderSessionRestoreApp */,
+				A00900000000000000000004 /* FinderSessionRestoreCore */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		A00900000000000000000003 /* FinderSessionRestoreApp */ = {
+			isa = PBXGroup;
+			children = (
+				A00200000000000000000001 /* main.swift */,
+				A00200000000000000000002 /* AppEntry.swift */,
+				A00200000000000000000003 /* MenuBarController.swift */,
+				A00200000000000000000004 /* SettingsWindowController.swift */,
+			);
+			path = FinderSessionRestoreApp;
+			sourceTree = "<group>";
+		};
+		A00900000000000000000004 /* FinderSessionRestoreCore */ = {
+			isa = PBXGroup;
+			children = (
+				A00200000000000000000011 /* AppleScriptRunner.swift */,
+				A00200000000000000000012 /* FinderAutomationService.swift */,
+				A00200000000000000000013 /* FinderSessionRecorder.swift */,
+				A00200000000000000000014 /* FinderSessionRestorer.swift */,
+				A00200000000000000000015 /* FinderTabService.swift */,
+				A00200000000000000000016 /* JSONCoding.swift */,
+				A00200000000000000000017 /* Models.swift */,
+				A00200000000000000000018 /* NetworkConnectionService.swift */,
+				A00200000000000000000019 /* PermissionService.swift */,
+				A0020000000000000000001A /* SchedulerService.swift */,
+				A0020000000000000000001B /* SessionStore.swift */,
+				A0020000000000000000001C /* SettingsStore.swift */,
+				A0020000000000000000001D /* SpaceService.swift */,
+			);
+			path = FinderSessionRestoreCore;
+			sourceTree = "<group>";
+		};
+		A00900000000000000000005 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A00900000000000000000006 /* FinderSessionRestoreCoreTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		A00900000000000000000006 /* FinderSessionRestoreCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				A00200000000000000000021 /* FinderSessionRestoreCoreTests.swift */,
+			);
+			path = FinderSessionRestoreCoreTests;
+			sourceTree = "<group>";
+		};
+		A00900000000000000000007 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A00200000000000000000041 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A00900000000000000000008 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A00300000000000000000001 /* FinderSessionRestore.app */,
+				A00300000000000000000002 /* FinderSessionRestoreCore.framework */,
+				A00300000000000000000003 /* FinderSessionRestoreCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A00200000000000000000051 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		A00200000000000000000052 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00600000000000000000001 /* FinderSessionRestore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00B00000000000000000001 /* Build configuration list for PBXNativeTarget "FinderSessionRestore" */;
+			buildPhases = (
+				A00A00000000000000000001 /* Sources */,
+				A00800000000000000000001 /* Frameworks */,
+				A00700000000000000000001 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00D00000000000000000001 /* PBXTargetDependency */,
+			);
+			name = FinderSessionRestore;
+			productName = FinderSessionRestore;
+			productReference = A00300000000000000000001 /* FinderSessionRestore.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A00600000000000000000002 /* FinderSessionRestoreCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00B00000000000000000000002 /* Build configuration list for PBXNativeTarget "FinderSessionRestoreCore" */;
+			buildPhases = (
+				A00A00000000000000000002 /* Sources */,
+				A00800000000000000000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FinderSessionRestoreCore;
+			productName = FinderSessionRestoreCore;
+			productReference = A00300000000000000000002 /* FinderSessionRestoreCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		A00600000000000000000003 /* FinderSessionRestoreCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00B00000000000000000000003 /* Build configuration list for PBXNativeTarget "FinderSessionRestoreCoreTests" */;
+			buildPhases = (
+				A00A00000000000000000003 /* Sources */,
+				A00800000000000000000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00D00000000000000000002 /* PBXTargetDependency */,
+			);
+			name = FinderSessionRestoreCoreTests;
+			productName = FinderSessionRestoreCoreTests;
+			productReference = A00300000000000000000003 /* FinderSessionRestoreCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00500000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A00600000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A00600000000000000000002 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A00600000000000000000003 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A00600000000000000000002;
+					};
+				};
+			};
+			buildConfigurationList = A00B00000000000000000000004 /* Build configuration list for PBXProject "FinderSessionRestore" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A00900000000000000000001;
+			productRefGroup = A00900000000000000000008 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A00600000000000000000001 /* FinderSessionRestore */,
+				A00600000000000000000002 /* FinderSessionRestoreCore */,
+				A00600000000000000000003 /* FinderSessionRestoreCoreTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A00A00000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00100000000000000000001 /* main.swift in Sources */,
+				A00100000000000000000002 /* AppEntry.swift in Sources */,
+				A00100000000000000000003 /* MenuBarController.swift in Sources */,
+				A00100000000000000000004 /* SettingsWindowController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00A00000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00100000000000000000011 /* AppleScriptRunner.swift in Sources */,
+				A00100000000000000000012 /* FinderAutomationService.swift in Sources */,
+				A00100000000000000000013 /* FinderSessionRecorder.swift in Sources */,
+				A00100000000000000000014 /* FinderSessionRestorer.swift in Sources */,
+				A00100000000000000000015 /* FinderTabService.swift in Sources */,
+				A00100000000000000000016 /* JSONCoding.swift in Sources */,
+				A00100000000000000000017 /* Models.swift in Sources */,
+				A00100000000000000000018 /* NetworkConnectionService.swift in Sources */,
+				A00100000000000000000019 /* PermissionService.swift in Sources */,
+				A0010000000000000000001A /* SchedulerService.swift in Sources */,
+				A0010000000000000000001B /* SessionStore.swift in Sources */,
+				A0010000000000000000001C /* SettingsStore.swift in Sources */,
+				A0010000000000000000001D /* SpaceService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00A00000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00100000000000000000021 /* FinderSessionRestoreCoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A00D00000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A00600000000000000000002 /* FinderSessionRestoreCore */;
+			targetProxy = A00400000000000000000001 /* PBXContainerItemProxy */;
+		};
+		A00D00000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A00600000000000000000002 /* FinderSessionRestoreCore */;
+			targetProxy = A00400000000000000000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A00C00000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A00C00000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A00C00000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.FinderSessionRestore;
+				PRODUCT_NAME = FinderSessionRestore;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A00C00000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.FinderSessionRestore;
+				PRODUCT_NAME = FinderSessionRestore;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A00C00000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "@rpath";
+				MACH_O_TYPE = mh_dylib;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.FinderSessionRestoreCore;
+				PRODUCT_NAME = FinderSessionRestoreCore;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A00C00000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "@rpath";
+				MACH_O_TYPE = mh_dylib;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.FinderSessionRestoreCore;
+				PRODUCT_NAME = FinderSessionRestoreCore;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A00C00000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.FinderSessionRestoreCoreTests;
+				PRODUCT_NAME = FinderSessionRestoreCoreTests;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A00C00000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.FinderSessionRestoreCoreTests;
+				PRODUCT_NAME = FinderSessionRestoreCoreTests;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A00B00000000000000000001 /* Build configuration list for PBXNativeTarget "FinderSessionRestore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00000000000000000003 /* Debug */,
+				A00C00000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00B00000000000000000000002 /* Build configuration list for PBXNativeTarget "FinderSessionRestoreCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00000000000000000005 /* Debug */,
+				A00C00000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00B00000000000000000000003 /* Build configuration list for PBXNativeTarget "FinderSessionRestoreCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00000000000000000007 /* Debug */,
+				A00C00000000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00B00000000000000000000004 /* Build configuration list for PBXProject "FinderSessionRestore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00000000000000000001 /* Debug */,
+				A00C00000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A00500000000000000000001 /* Project object */;
+}
