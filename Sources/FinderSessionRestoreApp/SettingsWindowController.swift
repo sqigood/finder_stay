@@ -15,6 +15,7 @@ final class SettingsWindowController: NSWindowController {
     private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "Launch at login", target: nil, action: nil)
     private let permissionLabel = NSTextField(labelWithString: "")
     private let lastSavedLabel = NSTextField(labelWithString: "")
+    private let tabView = NSTabView()
 
     init(
         settingsStore: SettingsStore,
@@ -28,7 +29,7 @@ final class SettingsWindowController: NSWindowController {
         self.scheduler = scheduler
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 560, height: 520),
+            contentRect: NSRect(x: 0, y: 0, width: 640, height: 430),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -54,93 +55,167 @@ final class SettingsWindowController: NSWindowController {
             return
         }
 
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 16
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(stack)
+        tabView.translatesAutoresizingMaskIntoConstraints = false
+        tabView.tabViewType = .topTabsBezelBorder
+        contentView.addSubview(tabView)
+
+        let footer = NSStackView()
+        footer.orientation = .horizontal
+        footer.alignment = .centerY
+        footer.spacing = 10
+        footer.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(footer)
+
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        footer.addArrangedSubview(spacer)
+        footer.addArrangedSubview(NSButton(title: "Save Settings", target: self, action: #selector(saveSettings)))
 
         NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 22)
+            tabView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            tabView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            tabView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
+            tabView.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: -14),
+
+            footer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+            footer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
+            footer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
 
-        autoSaveCheckbox.target = self
-        autoSaveCheckbox.action = #selector(autoSaveToggled)
-        stack.addArrangedSubview(settingBlock(
-            title: "Automatic Save",
-            detail: "Off by default. When enabled, the app saves Finder sessions on the interval below.",
-            controls: [autoSaveCheckbox, compactRow(control: intervalField, suffix: "seconds")]
-        ))
-
-        stack.addArrangedSubview(settingBlock(
-            title: "Completion Sound",
-            detail: "Plays after manual save and restore complete.",
-            controls: [soundCheckbox]
-        ))
-
-        stack.addArrangedSubview(settingBlock(
-            title: "Restore Safety",
-            detail: "Network timeout is used only for saved network or mounted-volume targets.",
-            controls: [compactRow(control: timeoutField, suffix: "seconds")]
-        ))
-
-        stack.addArrangedSubview(settingBlock(
-            title: "History",
-            detail: "Number of saved snapshots to keep in the local app data folder.",
-            controls: [compactRow(control: historyField, suffix: "snapshots")]
-        ))
-
-        stack.addArrangedSubview(settingBlock(
-            title: "Launch",
-            detail: "Controls whether the utility starts when you sign in.",
-            controls: [launchAtLoginCheckbox]
-        ))
-
-        permissionLabel.lineBreakMode = .byWordWrapping
-        permissionLabel.maximumNumberOfLines = 4
-        stack.addArrangedSubview(settingBlock(
-            title: "Permissions",
-            detail: "Finder control, window position reading, and Desktop-safe restore depend on these macOS permissions.",
-            controls: [permissionLabel]
-        ))
-
-        lastSavedLabel.textColor = .secondaryLabelColor
-        stack.addArrangedSubview(lastSavedLabel)
-
-        let utilityRow = NSStackView()
-        utilityRow.orientation = .horizontal
-        utilityRow.spacing = 8
-        utilityRow.addArrangedSubview(NSButton(title: "Open Data Folder", target: self, action: #selector(openDataFolder)))
-        utilityRow.addArrangedSubview(NSButton(title: "Request Accessibility", target: self, action: #selector(requestAccessibility)))
-        utilityRow.addArrangedSubview(NSButton(title: "Request Screen Recording", target: self, action: #selector(requestScreenRecording)))
-        stack.addArrangedSubview(utilityRow)
-
-        let bottomRow = NSStackView()
-        bottomRow.orientation = .horizontal
-        bottomRow.spacing = 8
-        bottomRow.addArrangedSubview(NSButton(title: "Reset Saved Sessions", target: self, action: #selector(resetSavedSessions)))
-        bottomRow.addArrangedSubview(NSButton(title: "Save Settings", target: self, action: #selector(saveSettings)))
-        stack.addArrangedSubview(bottomRow)
+        addTab(label: "General", contentView: generalTab())
+        addTab(label: "Restore", contentView: restoreTab())
+        addTab(label: "Permissions", contentView: permissionsTab())
+        addTab(label: "Data", contentView: dataTab())
     }
 
-    private func settingBlock(title: String, detail: String, controls: [NSView]) -> NSView {
+    private func generalTab() -> NSView {
+        autoSaveCheckbox.target = self
+        autoSaveCheckbox.action = #selector(autoSaveToggled)
+
+        return tabContent([
+            settingSection(
+                title: "Automatic Save",
+                detail: "Off by default. Turn this on only if you want periodic Finder session snapshots.",
+                controls: [autoSaveCheckbox, fieldRow(control: intervalField, suffix: "seconds")]
+            ),
+            settingSection(
+                title: "Completion Sound",
+                detail: "Play a short system sound after manual save and restore complete.",
+                controls: [soundCheckbox]
+            ),
+            settingSection(
+                title: "Startup",
+                detail: "Open the menu bar utility automatically when you sign in.",
+                controls: [launchAtLoginCheckbox]
+            )
+        ])
+    }
+
+    private func restoreTab() -> NSView {
+        return tabContent([
+            settingSection(
+                title: "Network Timeout",
+                detail: "Used only when restoring saved targets on mounted volumes or network locations.",
+                controls: [fieldRow(control: timeoutField, suffix: "seconds")]
+            ),
+            settingSection(
+                title: "Snapshot History",
+                detail: "Keeps recent local snapshots so the latest Finder state can be restored safely.",
+                controls: [fieldRow(control: historyField, suffix: "snapshots")]
+            )
+        ])
+    }
+
+    private func permissionsTab() -> NSView {
+        permissionLabel.lineBreakMode = .byWordWrapping
+        permissionLabel.maximumNumberOfLines = 5
+        permissionLabel.textColor = .secondaryLabelColor
+        permissionLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 540).isActive = true
+
+        let buttonRow = NSStackView()
+        buttonRow.orientation = .horizontal
+        buttonRow.alignment = .centerY
+        buttonRow.spacing = 8
+        buttonRow.addArrangedSubview(NSButton(title: "Request Accessibility", target: self, action: #selector(requestAccessibility)))
+        buttonRow.addArrangedSubview(NSButton(title: "Request Screen Recording", target: self, action: #selector(requestScreenRecording)))
+
+        return tabContent([
+            settingSection(
+                title: "macOS Permissions",
+                detail: "Finder control, window positions, and Desktop-safe restore depend on these system permissions.",
+                controls: [permissionLabel, buttonRow]
+            )
+        ])
+    }
+
+    private func dataTab() -> NSView {
+        lastSavedLabel.textColor = .secondaryLabelColor
+        lastSavedLabel.lineBreakMode = .byTruncatingMiddle
+
+        let buttonRow = NSStackView()
+        buttonRow.orientation = .horizontal
+        buttonRow.alignment = .centerY
+        buttonRow.spacing = 8
+        buttonRow.addArrangedSubview(NSButton(title: "Open Data Folder", target: self, action: #selector(openDataFolder)))
+        buttonRow.addArrangedSubview(NSButton(title: "Reset Saved Sessions", target: self, action: #selector(resetSavedSessions)))
+
+        return tabContent([
+            settingSection(
+                title: "Saved Sessions",
+                detail: "Local session data is stored in the app support folder on this Mac.",
+                controls: [lastSavedLabel, buttonRow]
+            )
+        ])
+    }
+
+    private func addTab(label: String, contentView: NSView) {
+        let item = NSTabViewItem(identifier: label)
+        item.label = label
+        item.view = contentView
+        tabView.addTabViewItem(item)
+    }
+
+    private func tabContent(_ sections: [NSView]) -> NSView {
+        let view = NSView()
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 5
+        stack.spacing = 22
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stack)
+
+        for section in sections {
+            stack.addArrangedSubview(section)
+        }
+
+        let bottomConstraint = stack.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -24)
+        bottomConstraint.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            stack.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -24),
+            stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 24),
+            bottomConstraint
+        ])
+
+        return view
+    }
+
+    private func settingSection(title: String, detail: String, controls: [NSView]) -> NSView {
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 7
 
         let titleLabel = NSTextField(labelWithString: title)
-        titleLabel.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
+        titleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
         stack.addArrangedSubview(titleLabel)
 
         let detailLabel = NSTextField(labelWithString: detail)
         detailLabel.textColor = .secondaryLabelColor
         detailLabel.lineBreakMode = .byWordWrapping
         detailLabel.maximumNumberOfLines = 2
-        detailLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 500).isActive = true
+        detailLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 540).isActive = true
         stack.addArrangedSubview(detailLabel)
 
         for control in controls {
@@ -150,16 +225,19 @@ final class SettingsWindowController: NSWindowController {
         return stack
     }
 
-    private func compactRow(control: NSView, suffix: String) -> NSView {
+    private func fieldRow(control: NSControl, suffix: String) -> NSView {
         let stack = NSStackView()
         stack.orientation = .horizontal
         stack.alignment = .centerY
         stack.spacing = 8
-        control.widthAnchor.constraint(equalToConstant: 120).isActive = true
+
+        control.widthAnchor.constraint(equalToConstant: 96).isActive = true
         stack.addArrangedSubview(control)
+
         let suffixLabel = NSTextField(labelWithString: suffix)
         suffixLabel.textColor = .secondaryLabelColor
         stack.addArrangedSubview(suffixLabel)
+
         return stack
     }
 
